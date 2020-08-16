@@ -1,0 +1,53 @@
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-7 shadow text-dark">
+            <div class="card">
+                <div class="card-header">
+                    {% for post in blogs %}
+                        {{post.title}} 
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    {% for post in blogs %}
+                        {{post.body}} 
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    {% for post in blogs %}
+                        {{post.author}} 
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    <div class="col-md-4 card border mx-4 h-25  d-flex flex-column mb-4 wow shadow">
+
+    
+        <div class="mx-4 h-25 p-0  mb-4 wow"
+            style="visibility: visible; animation-name: fadeIn;">
+            <div class="d-flex flex-column justify-content-center pt-2 align-items-center">
+                <h3>Coming Soon</h3>
+            </div>
+            <!-- Card body -->
+            <div class="card-body p-0 d-flex flex-column">
+                <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                    <p>Having amazing product that is not popular. Lets make them viral .</p>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success w-100">Create Post</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card d-flex  flex-column mb-4 wow fadeIn mb-4" style="visibility: visible; animation-name: fadeIn;">
+            <div class="card-header d-flex flex-column justify-content-center align-items-center">
+                <a href="/enroll/" target="_blank" rel="nofollow"><h4>Join the community</h4></a>
+            </div>
+                <iframe class="discord-app" src="https://discordapp.com/widget?id=237394268044525568&amp;theme=dark" allowtransparency="true" frameborder="0"></iframe>
+            </div>
+        </div>
+        
+    </div>
+</div>
+</div>

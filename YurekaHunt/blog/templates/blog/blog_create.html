@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Create
+    {% endblock title %}</title>
+
+</head>
+
+<body>
+
+  {% block content %}
+  <style>
+    body {
+      background-color: #b2f0f7;
+    }
+  </style>
+  {%if success %}
+  <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white text-center">Hurrrrey !</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3 class="text-center">{{success}}</h3>
+        </div>
+        <div class="modal-footer">
+          <a href="/" class="btn btn-warning">Home</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="container mt-3">
+    <div class="col-md-8 col-sm-4 container">
+      <form action="." method='post' enctype="multipart/form-data">{% csrf_token %}
+        {{ form.media }}
+        {% bootstrap_form form  %}
+        {% buttons %}
+        <button class="btn btn-success" type="submit">Create Now</button>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#exampleModal").modal('show');
+    });
+  </script>
+  {% endblock content %}
+</body>
+
+</html>

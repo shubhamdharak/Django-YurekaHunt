@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Home
+        {% endblock title %}</title>
+</head>
+
+<body>
+    {% block content %}
+    <style type="text/css">
+        @media (max-width: 768px) {
+            .right-column {
+                margin-left: 0px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .right-column {
+                margin-left: 20px;
+            }
+        }
+
+        .blog-post-container {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .create-post-bar {
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .left-column {
+            padding: 0px;
+        }
+
+        .right-column {
+            padding: 0px;
+        }
+
+        .lead {
+            font-size: 17px;
+        }
+    </style>
+
+
+    <!-- main content -->
+    <div class="container">
+        <div class="row mt-3">
+
+            <!-- blog feed -->
+            <div class="left-column col-lg-7 offset-lg-1">
+
+                <!-- Top 'create post' bar -->
+                <div class="d-lg-none mb-3">
+                    <div class="card m-auto d-flex flex-column p-3">
+
+                        <p class="lead">Welcome to Yureka Hunt. The most amazing website that gives you unseen or hidden things.You can show your or someone's creative thing here.</p>
+                        <p class="m-auto"><a class="btn btn-primary" href="{% url 'create' %}">Create post</a></p>
+                    </div>
+                </div>
+                <!-- end Top 'create post' bar -->
+
+                <!-- Blog posts-->
+
+                <div>
+                    <h3 class="badge badge-info">Total product searched : {{blogs.count}}</h3>
+                </div>
+                {% if blogs %}
+                {% for blog in blogs %}
+                <div class="card blog-post-container shadow">
+                    <img src="{{blog.image.url}}" class="card-img-top">
+
+                    <div class="card-header">
+                        <a href="{{blog.url}}">
+                            <h3>{{blog.title}}
+                        </a>
+                        <a class="vote btn btn-primary like float-right text-white" id="pr{{blog.id}}"
+                            data="{{blog.id}}">Upvote ( {{blog.upvote}} )</a>
+
+                    </div>
+                    <div class="card-text px-4 pb-2">
+                        <span class="badge badge-warning">Owned By : {{blog.author}}</span>
+                    </div>
+                    <h7 class="px-4 pb-2 badge text-left">{{blog.date_pub}}</h7>
+                    <p class="px-4  card-text">{{blog.summary|safe}} <a href="blog/{{blog.slug}}">read more</a></p>
+
+                    <div class="card-footer">
+                        <p>updated on: {{blog.date_update}} by- {{blog.hunter}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="card blog-post-container shadow">
+                    <div class="car">
+                        <img src="{% static 'img/404.jpg' %}" class="card-img-top">
+                    </div>
+                </div>
+
+                {% endif %}
+                <div class="blog-post-container">
+
+                </div>
+
+
+                <!-- Pagination -->
+
+
+            </div>
+            <!-- end blog feed -->
+
+
+            <!-- Right 'create post' column  -->
+            <div class="right-column col-lg-3 d-lg-flex d-none flex-column">
+                <div class="card shadow create-post-bar d-flex flex-column p-3">
+                    <img src="{% static 'img/new_robo.jpg' %}" style="height: 250px;">
+                    <p class="lead">In this course you'll learn how to build a simple blog with user registration and
+                        blog CRUD functionality. Django is a powerful
+                        framework and you'll see why in this course.</p>
+                    <p class="m-auto"><a class="btn btn-warning " href="blog/create">Create post</a></p>
+                </div>
+
+            </div>
+            <!-- end Right 'create post' column  -->
+
+
+
+        </div>
+    </div>
+    {% endblock content %}
+    {% block script %}
+    <script>
+        $(document).ready(function () {
+            console.log("Working");
+            $(".like").click(function () {
+
+                var catid;
+                catid = $(this).attr('data')
+                $.ajax({
+                    url: "{% url 'upvotes' %}",
+                    method: 'GET',
+                    data: {
+                        post_id: catid
+                    },
+                    success: function (data) {
+                        $("#pr" + catid).html("Upvote ( " + data.upvote + " )");
+                    }
+                })
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

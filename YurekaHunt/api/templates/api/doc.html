@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} API | Doc 
+        {% endblock title %}</title>
+</head>
+
+<body>
+    {% block content %}
+    <style type="text/css">
+        @media (max-width: 768px) {
+            .right-column {
+                margin-left: 0px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .right-column {
+                margin-left: 20px;
+            }
+        }
+
+        .blog-post-container {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .create-post-bar {
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .left-column {
+            padding: 0px;
+        }
+
+        .right-column {
+            padding: 0px;
+        }
+
+        .lead {
+            font-size: 17px;
+        }
+    </style>
+
+
+    <!-- main content -->
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+            <h4{% if message.tags %} class="alert-{{ message.tags }}" {% endif %}>{{ message }}</h4>
+        {% endfor %}
+
+        {% endif %}
+            <div class="row mt-3">
+                <!-- blog feed -->
+                <div class="left-column col-lg-7 offset-lg-1">
+                    <!-- Top 'create post' bar -->
+                    <div class="d-lg-none mb-3">
+                        <div class="card m-auto d-flex flex-column p-3">
+                            <p class="lead">Welcome to Yureka Hunt. The most amazing website that gives you unseen or
+                                hidden things.You can show your or someone's creative thing here.
+                            </p>
+                            <p class="m-auto"><a class="btn btn-primary" href="{% url 'create' %}">Create post</a></p>
+                        </div>
+                    </div>
+                    <!-- end Top 'create post' bar -->
+
+                    <!-- Documentation starts here-->
+                    
+                    <div class="card blog-post-container shadow">
+                       <h4 class="text-center">Welcome to YurekaHunt API Documentation </h3>
+                        <h5 class="badge badge-info display-2 mt-4" >Endpoints</h5>
+                
+                    <code>
+                        <blockquote class="blockquote bg-dark text-white pl-5">
+                            post-list/'         <br>   
+                            post-create/' <br>
+                            post-detail/&lt;post_number&gt;/ <br>
+                            post-update/&lt;post_number&gt;/ <br>
+                            post-delete/&lt;post_number&gt;/
+                        </blockquote>
+                    </code>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">Post-list - get all the posts.</p>
+                        
+                      </blockquote>
+                    </div>
+
+                </div>
+                <!-- end blog feed -->
+
+
+                <!-- Right 'create post' column  -->
+                <div class="right-column col-lg-3 d-lg-flex d-none flex-column">
+
+                    <div class="card shadow create-post-bar d-flex flex-column p-3">
+                        <img src="{%static 'img/new_robo.jpg' %}" style="height: 250px;">
+                        <p class="lead">Welcome to Yureka Hunt. If you have an amazing product/item then show them to
+                            all. Get ready to Hunt</p>
+                        <p class="m-auto"><a class="btn btn-warning " href="{% url 'create' %}">Create post</a></p>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+    {% endblock content %}
+    {% block script %}
+    <script>
+        $(document).ready(function () {
+            {% if user.is_authenticated %}
+            $(".vote").click(function () {
+                var catdata;
+                catdata = $(this).attr('data'),
+                    $.ajax({
+                        url: "{% url 'upvotes' %}",
+                        method: 'GET',
+                        data: {
+
+                            'post_id': catdata
+                        },
+                        success: function (data) {
+                            $("#pr" + catdata).html("Upvote " + data.upvote);
+                        }
+                    });
+            });
+            {% else %}
+            $(".vote").click(function () {
+                alert("Your not Authorized User for Upvote. Signup or Login");
+            });
+            {% endif %}
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>
